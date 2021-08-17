@@ -27,14 +27,14 @@
         http://localhost:18083/swagger-ui.html
 ### 页面展示
     用户列表
-    ![Image text](https://raw.githubusercontent.com/bbxyczj/picture/main/rc-picture/20210817162239.png?token=AHI4GI3AWKTLU2GHHLBGSMTBDNZ5K)
+    ![image](https://github.com/bbxyczj/picture/blob/main/rc-picture/20210817162239.png)
     
     权限列表
-    ![Image text](https://raw.githubusercontent.com/bbxyczj/picture/main/rc-picture/20210817162254.png?token=AHI4GIZABDWSEHYHV3TUGNDBDN2H6)
-    ![Image text](https://raw.githubusercontent.com/bbxyczj/picture/main/rc-picture/20210817162258.png?token=AHI4GIZZJCN4NKNNZJ4EBHLBDN2JI)
+    ![image](https://github.com/bbxyczj/picture/blob/main/rc-picture/20210817162254.png)
+    ![image](https://github.com/bbxyczj/picture/blob/main/rc-picture/20210817162258.png)
           
     项目列表  
-    ![Image text](https://raw.githubusercontent.com/bbxyczj/picture/main/rc-picture/20210817163458.png?token=AHI4GI54QAURHODOZC4COZTBDN22E)
+    ![image](https://github.com/bbxyczj/picture/blob/main/rc-picture/20210817163458.png)
            
     
     
