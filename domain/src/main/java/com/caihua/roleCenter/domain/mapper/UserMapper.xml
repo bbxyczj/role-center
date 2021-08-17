@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caihua.roleCenter.domain.mapper.UserMapper">
+
+    <sql id="baseModel">
+        id,email,nickname,cardNum,status,updated,created
+    </sql>
+
+    <select id="select" parameterType="com.caihua.roleCenter.model.dto.User"
+            resultType="com.caihua.roleCenter.model.dto.User">
+        select  <include refid="baseModel"/>
+        from rc_user
+        <where>
+            <if test="cardNum !=null and cardNum!=''">
+                and cardNum=#{cardNum}
+            </if>
+            <if test="id!=null and id >0 ">
+                and id=#{id}
+            </if>
+            <if test="status >0 ">
+                and status=#{status}
+            </if>
+            <if test="email !=null and email!=''">
+                and email=#{email}
+            </if>
+            <if test="nickname !=null and nickname!=''">
+                and nickname like concat('%',#{nickname},'%')
+            </if>
+            and status=1
+        </where>
+        order by updated desc
+    </select>
+    <update id="update" parameterType="com.caihua.roleCenter.model.dto.User">
+        update rc_user
+        <set>
+            <if test="cardNum !=null and cardNum !=''">
+                cardNum=#{cardNum},
+            </if>
+            <if test="nickname != null and nickname !='' ">
+                nickname=#{nickname},
+            </if>
+            <if test="email != null and email !='' ">
+                email=#{email},
+            </if>
+            <if test="password != null and password !='' ">
+                password=#{password},
+            </if>
+            <if test="status !=null">
+                status=#{status},
+            </if>
+            updated=#{updated}
+        </set>
+        where id=#{id}
+    </update>
+
+    <insert id="insert" parameterType="com.caihua.roleCenter.model.dto.User">
+        INSERT  INTO rc_user (email,nickname,cardNum,password,status,updated,created)
+        VALUES (#{email},#{nickname},#{cardNum},${password},#{status},#{updated},#{created});
+    </insert>
+
+
+    <select id="getFunction" resultType="com.caihua.roleCenter.model.dto.Action">
+        select a.id,a.pid,a.itemId,a.itemName,a.name,
+        a.url,a.isIndex,a.sort,a.updated,a.created
+        from rc_user_role u right join  rc_role_action r on u.roleId=r.roleId
+        right join rc_action a on r.actionId=a.id
+        right join rc_item i on i.id=a.itemId
+        where u.userId=#{userId} and i.no=#{itemNo}
+    </select>
+
+    <select id="getFunctionStr" resultType="string">
+        select distinct a.url
+        from rc_user_role u right join  rc_role_action r on u.roleId=r.roleId
+        right join rc_action a on r.actionId=a.id
+        right join rc_item i on i.id=a.itemId
+        where u.userId=#{userId} and i.no=#{itemNo}
+    </select>
+
+</mapper>

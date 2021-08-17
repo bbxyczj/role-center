@@ -1,0 +1,12 @@
+package com.caihua.roleCenter.model.dto;
+
+import lombok.Data;
+
+/**
+ * created by zhengliu on 2018/6/29
+ */
+@Data
+public class RoleAction extends BaseModel{
+    private Integer roleId;
+    private Integer actionId;
+}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caihua.roleCenter.domain.mapper.ActionMapper">
+
+    <sql id="baseModel">
+      id,pid,itemId,itemName,name,url,isIndex,sort,updated,created
+    </sql>
+
+    <select id="select" parameterType="com.caihua.roleCenter.model.dto.Action"
+    resultType="com.caihua.roleCenter.model.dto.Action">
+        select <include refid="baseModel"/>
+        from rc_action
+        <where>
+            <if test="itemName!=null and itemName!=''">
+                and itemName=#{itemName}
+            </if>
+            <if test="name!=null and name!=''">
+                and name=#{name}
+            </if>
+            <if test="url!=null and url!=''">
+                and url like CONCAT('%','${url}','%' )
+            </if>
+            <if test="id>0">
+                and id=#{id}
+            </if>
+            <if test="pid>0">
+                and pid=#{pid}
+            </if>
+            <if test="isIndex>0">
+                and isIndex=#{isIndex}
+            </if>
+        </where>
+        order by sort desc,updated desc
+    </select>
+
+    <insert id="insert" parameterType="com.caihua.roleCenter.model.dto.Action" useGeneratedKeys="true" keyProperty="id">
+        insert into rc_action (pid,itemId,itemName,name,url,isIndex,sort,updated,created)
+        values (#{pid},#{itemId},#{itemName},#{name},#{url},#{isIndex},#{sort},#{updated},#{created})
+    </insert>
+
+    <update id="update" parameterType="com.caihua.roleCenter.model.dto.Action">
+        update rc_action
+        <set>
+            <if test="name!=null and name!=''">
+                 name=#{name},
+            </if>
+            <if test="itemId>0">
+                itemId=#{itemId},
+            </if>
+            <if test="url!=null and url!=''">
+                 url=#{url},
+            </if>
+            <if test="pid>0">
+                 pid=#{pid},
+            </if>
+            <if test="isIndex>0">
+                 isIndex=#{isIndex},
+            </if>
+            <if test="sort>0">
+                sort=#{sort},
+            </if>
+            updated=#{updated}
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findByRoleId" resultType="com.caihua.roleCenter.model.dto.Action">
+        select a.id,pid,itemId,itemName,name,url,isIndex,sort,a.updated,a.created
+        from rc_action a left join rc_role_action ra on a.id=ra.actionId
+        where ra.roleId=#{roleId}
+
+    </select>
+
+    <select id="getActionVo" resultType="com.caihua.roleCenter.model.dto.Action">
+        select id,pid,itemId,itemName,name,isIndex,sort,url
+        from rc_action
+        <where>
+            <if test="itemId>0">
+                and itemId=#{itemId}
+            </if>
+            <if test="isIndex > 0">
+                and isIndex=#{isIndex}
+            </if>
+            <if test="actionIds !=null">
+                and id in
+                <foreach collection="actionIds" item="id" separator="," open="(" close=")">
+                    #{id}
+                </foreach>
+            </if>
+            and pid=#{pid}
+        </where>
+        order by sort desc,updated desc
+    </select>
+
+    <select id="getAction" resultType="com.caihua.roleCenter.model.dto.Action" parameterType="com.caihua.roleCenter.model.request.ActionUserRequest">
+        select DISTINCT a.url
+        from rc_action a
+        left join rc_role_action  ra on  a.id=ra.actionId
+        left join rc_user_role ur on ra.roleId=ur.roleId
+        left join rc_user u on ur.userId=u.id
+        left join rc_item i on a.itemId =i.id
+        where u.id=#{userId} and i.no=#{itemNo} and a.url=#{url} and i.status=1 and u.status=1
+        order By a.sort desc ,a.updated desc
+    </select>
+
+</mapper>

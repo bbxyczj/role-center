@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caihua.roleCenter.domain.mapper.RoleActionMapper">
+
+    <select id="count" parameterType="com.caihua.roleCenter.model.dto.RoleAction" resultType="int">
+        select count(*)
+        from rc_role_action
+        <where>
+            <if test="roleId>0">
+                and roleId=#{roleId}
+            </if>
+            <if test="actionId>0">
+                and actionId=#{actionId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete" parameterType="com.caihua.roleCenter.model.dto.RoleAction">
+        delete from rc_role_action
+        <where>
+            <if test="roleId>0">
+                and roleId=#{roleId}
+            </if>
+            <if test="actionId>0">
+                and actionId=#{actionId}
+            </if>
+        </where>
+
+    </delete>
+
+    <select id="selectByUserId" parameterType="int" resultType="int">
+        select DISTINCT actionId
+        from rc_role_action ra left join rc_user_role ur on ra.roleId=ur.roleId
+        where ur.userId=#{userId}
+    </select>
+
+</mapper>

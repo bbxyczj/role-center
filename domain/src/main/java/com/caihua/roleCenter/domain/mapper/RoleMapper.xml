@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caihua.roleCenter.domain.mapper.RoleMapper">
+
+    <sql id="baseModel">id,name,note,updated,created</sql>
+
+
+    <insert id="insert" parameterType="com.caihua.roleCenter.model.dto.Role">
+        insert into rc_role (name,note,updated,created)
+        VALUES (#{name},#{note},#{updated},#{created})
+    </insert>
+
+    <select id="select" parameterType="com.caihua.roleCenter.model.dto.Role" resultType="com.caihua.roleCenter.model.dto.Role">
+        select <include refid="baseModel"/>
+        from rc_role
+        <where>
+            <if test="name !=null and name !=''">
+                and name=#{name}
+            </if>
+        </where>
+        order by updated desc
+    </select>
+
+    <update id="update" parameterType="com.caihua.roleCenter.model.dto.Role">
+        update rc_role
+        <set>
+            <if test="name !=null and name != ''">
+                name=#{name},
+            </if>
+            <if test="note !=null and name!=''">
+                note=#{note},
+            </if>
+            updated=#{updated}
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="findByUserId" parameterType="int" resultType="com.caihua.roleCenter.model.dto.Role">
+        select r.id,name,note,r.updated,r.created
+        from rc_role r left join rc_user_role ur on r.id=ur.roleId
+        where ur.userId=#{userId}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caihua.roleCenter.domain.mapper.ConfigMapper">
+
+    <sql id="field">
+         keyword, value,comments
+    </sql>
+
+    <!-- 查询-->
+    <select id="select" parameterType="com.caihua.roleCenter.model.dto.Config"
+            resultType="com.caihua.roleCenter.model.dto.Config">
+        select  <include refid="field"/> from rc_config
+        <where>
+            <if test="keyword != null and keyword != '' ">
+                AND keyword  like concat('%', #{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.caihua.roleCenter.model.dto.Config">
+
+        update rc_config
+        <set>
+            <if test="value != '' and value != null ">
+
+                `value` = #{value},
+
+            </if>
+            <if test="comments != '' and comments != null ">
+
+                comments = #{comments},
+
+            </if>
+        </set>
+
+        where keyword = #{keyword}
+
+    </update>
+
+</mapper>
